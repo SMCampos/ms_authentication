@@ -7,20 +7,20 @@ import ForbiddenError from "../models/errors/forbidden.error.model";
 const authorizationRoute = Router();
 
 authorizationRoute.post('/token', basicAuthenticationMiddleware, async (req: Request, res: Response, next: NextFunction) => {
-    try{
+    try {
         const user = req.user;
 
-        if(!user){
+        if (!user) {
             throw new ForbiddenError('Usuário não informado!');
         }
 
-        const jwtPayload = { username: user.username};
-        const jwtOptions = { subject: user?.uuid};
+        const jwtPayload = { username: user.username };
+        const jwtOptions = { subject: user?.uuid };
         const secretKey = 'my_secret-key';
         const jwt = JWT.sign(jwtPayload, secretKey, jwtOptions);
-        res.status(StatusCodes.OK).json({ token: jwt});
+        res.status(StatusCodes.OK).json({ token: jwt });
 
-    }catch (error){
+    } catch (error) {
         next(error);
     }
 });
